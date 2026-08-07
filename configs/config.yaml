@@ -1,0 +1,13 @@
+train_file: ./titanic_data/train.csv
+test_file: ./titanic_data/test.csv
+output_path: ./outputs
+
+label: Survived
+
+# input_feats: ["Survived"]
+
+model:
+  type: gbt 
+  lr: 0.05
+  n_estimators: 20 
+  num_leaves: 2
