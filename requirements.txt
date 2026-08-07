@@ -4,3 +4,7 @@ PyYAML==6.0.3
 #ML
 lightgbm==4.6.0
 scikit-learn==1.6.1
+xgboost==2.1.4
+
+#plotting
+matplotlib==3.9.4

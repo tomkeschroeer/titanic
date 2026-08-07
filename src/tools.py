@@ -37,7 +37,8 @@ class ConfigLoader:
             "model", 
             "output_path",
             "train_file",
-            "test_file"
+            "test_file",
+            "solution_file"
         ]
 
         # default values for optional values that are not model specific
@@ -45,6 +46,7 @@ class ConfigLoader:
             "input_feats": ["Sex","Pclass", "Age","SibSp","Parch"],
             "label": "Survived",
             "postfix": "",
+            "eval": {},
         }
 
         # default values for optional values that are model specific
@@ -54,16 +56,9 @@ class ConfigLoader:
                 "n_estimators": 500,
                 "num_leaves" : 31,
             },
-            "hgbr": {
-                "lr": 0.1, 
-                "max_iter": 100, 
-                "max_leaf_nodes": 31, 
-                "min_samples_leaf": 20,
-            },
-            "rfqr": {
-                "n_estimators": 500,
-                "min_samples_leaf": 20,
-                "max_leaf_nodes": 31,
+            "xgb": {
+                "learning_rate": 0.3, 
+                "max_depth": 6, 
             },
         }
 
@@ -76,6 +71,7 @@ class ConfigLoader:
             setattr(self, val, self.config.get(val))
 
         model_type = self.model["type"]
+        del self.model["type"]
         self.type = model_type
 
         for val in self.default_optional_values_gen.keys():
@@ -88,9 +84,9 @@ class ConfigLoader:
         for val in self.default_optional_values[model_type].keys():
             if val not in self.config["model"]:
                 print(f"WARNING: Configuration for {val} not set. Setting to default value {self.default_optional_values[model_type].get(val, None)}")
-            setattr(self, val, self.config["model"].get(
-                val, 
-                self.default_optional_values[model_type].get(val, None))
+            self.model[val] = self.config["model"].get(
+                val,
+                self.default_optional_values[model_type].get(val, None)
             )
 
 class DataLoader:
